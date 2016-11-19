@@ -50,17 +50,8 @@ double MHstep(double xo, double ds){
 	return x1;
 }
 
-int main(){
- 
- ///Parámetros
-  int burnin = 0; // burn-in iterations -> iteraciones previas para evitar mal punto de partida
-  int lag = 1; // lag entre muestreo -> para distribuciones con baja tasa de aceptación
-  int samples = 1000; // numero de muestras
-  int sd = 50; // desviación estándar
-  double x = -1; // punto de partida
-
-  
-  // iteraciones previas (burn in)
+void muestreo(int burnin, int samples, int lag, double x, int sd){
+	  // iteraciones previas (burn in)
   for(int i=1;i<=burnin;i=i+1){ 
   		x = MHstep(x,sd);
   }
@@ -79,6 +70,31 @@ int main(){
   		//muestra por pantalla valores obtenidos
   		cout << x << "\n";
   }
+
+}
+
+
+int main(){
+ 
+ ///Parámetros
+  int burnin = 0; // burn-in iterations -> iteraciones previas para evitar mal punto de partida
+  int lag = 1; // lag entre muestreo -> para distribuciones con baja tasa de aceptación
+  int samples = 1000; // numero de muestras
+  int sd; // desviación estándar
+  double x = -1; // punto de partida
+
+  
+  cout << "Ingrese desviación estándar: \n";
+  cin >> sd;
+  while(!cin || sd<0){
+
+    cin.clear(); // Borrar la entrada fallida
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+    cout << "Desviación debe ser un número mayor o igual a 0\nPor favor, introduzca un número válido: \n";
+    cin >> sd;
+  }
+
+  muestreo(burnin,samples,lag,x,sd); 
   
   return 0;
 }
